@@ -21,6 +21,23 @@ app.post('/courses', (req , res) => {
     courses.push(singleCourse)
     res.send(courses)
 })
+
+app.put('/course/:id' , (req , res) => {
+    try{
+        let singleCourse = courses.find((course) => {
+            return course.id === +req.params.id
+        })
+
+        if (!singleCourse) {
+            res.status(404).send('course does not exist');
+        }
+
+        singleCourse.name = req.body.name;
+        res.send(courses);
+    }catch (err) {
+        res.status(500).send(err);
+    }
+})
 app.listen(3001, () =>{
     console.log('server started')
 })
