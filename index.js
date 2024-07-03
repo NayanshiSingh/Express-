@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 
 app.use(express.json());
+app.use(middleware);
+app.use(logger);
 
 let courses = [
     {id: 1, name: "java"},
@@ -38,6 +40,20 @@ app.put('/course/:id' , (req , res) => {
         res.status(500).send(err);
     }
 })
+
+function middleware(req , res, next) {
+    console.log("called");
+    next();
+}
+
+function logger(req , res , next) {
+    const method = req.method;
+    const ip = req.ip;
+    const hostname = req.hostname;
+    const date = new Date().toISOString();
+    console.log(method , ip , hostname , date);
+    next();
+}
 app.listen(3001, () =>{
     console.log('server started')
 })
